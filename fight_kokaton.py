@@ -56,7 +56,6 @@ class Bird:
         self.rct = self.img.get_rect()
         self.rct.center = xy
 
-
     def change_img(self, num: int, screen: pg.Surface):
         """
         こうかとん画像を切り替え，画面に転送する
@@ -84,7 +83,6 @@ class Bird:
             self.img = self.imgs[tuple(sum_mv)]
         screen.blit(self.img, self.rct)
 
-
 class Beam:
     def __init__(self, bird: Bird):
         """
@@ -104,8 +102,6 @@ class Beam:
         """
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
-
-
 
 class Bomb:
     """
@@ -140,7 +136,6 @@ class Bomb:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
 
-
 class Score:
     def __init__(self):
         self.font = pg.font.Font("./fonts/meiryo.ttc", 30)
@@ -171,10 +166,7 @@ def main():
                     # キーが押されたら，かつキーの種類がスペースキーだったら
                     beams.append(Beam(bird))
 
-
-
         screen.blit(bg_img, [0, 0])
-
 
         for bomb in bombs:
             if bird.rct.colliderect(bomb.rct):
@@ -210,7 +202,6 @@ def main():
         pg.display.update()
         tmr += 1
         clock.tick(50)
-
 
 if __name__ == "__main__":
     pg.init()

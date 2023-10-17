@@ -9,7 +9,6 @@ WIDTH = 1600  # ゲームウィンドウの幅
 HEIGHT = 900  # ゲームウィンドウの高さ
 NUM_OF_BOMBS = 5
 
-
 def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     """
     オブジェクトが画面内or画面外を判定し，真理値タプルを返す関数
@@ -92,7 +91,7 @@ class Beam:
         ビーム画像Surfaceを生成する
         引数 bird：こうかとんインスタンス(Birdクラスのインスタンス)
         """
-        self.img = pg.image.load(f"./fig/beam.png")
+        self.img = pg.image.load(f"ex03/fig/beam.png")
         self.rct = self.img.get_rect()
         self.rct.left = bird.rct.right # こうかとんの右横座標
         self.rct.centery = bird.rct.centery # こうかとんの中心縦座標
@@ -141,6 +140,19 @@ class Bomb:
         self.rct.move_ip(self.vx, self.vy)
         screen.blit(self.img, self.rct)
 
+
+class Score:
+    def __init__(self):
+        self.font = pg.font.Font("./fonts/meiryo.ttc", 30)
+        self.text_color = (0, 0, 255)
+        self.score = 0
+        self.img = self.font.render(f"スコア: {self.score}", 0, (0,0,255))
+        self.rct =  self.img.get_rect()
+        self.rct.center = [100, 50]
+    def update(self, screen: pg.Surface):
+        self.img = self.font.render(f"スコア: {self.score}", 0, (0,0,255))
+        screen.blit(self.img,self.rct)
+
 def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -148,7 +160,8 @@ def main():
     bird = Bird(3, (900, 400))
     bombs = [Bomb() for _ in range(NUM_OF_BOMBS)]
     beam = None
-
+    s = Score()
+    SCORE = 0
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -176,10 +189,10 @@ def main():
                     beam = None
                     bombs[i] = None
                     bird.change_img(6, screen)
+                    s.score += 1
                     pg.display.update()
-                    time.sleep(1)
         bombs = [bomb for bomb in bombs if bomb is not None]
-
+        s.update(screen)
 
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
